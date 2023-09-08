@@ -1,0 +1,43 @@
+sampleID	sample_name	sample_type	run
+0068-reseq	0068	sample	2022_02_17
+0021-reseq	0021	sample	2022_02_17
+0027-reseq	0027	sample	2022_02_17
+0612-reseq	0612	sample	2022_02_17
+0096-reseq	0096	sample	2022_02_17
+0909-reseq	0909	sample	2022_02_17
+0924-reseq	0924	sample	2022_02_17
+0922-reseq	0922	sample	2022_02_17
+0920-reseq	0920	sample	2022_02_17
+0917-reseq	0917	sample	2022_02_17
+0961-reseq	0961	sample	2022_02_17
+0903-reseq	0903	sample	2022_02_17
+0926-reseq	0926	sample	2022_02_17
+ATCC-7	ATCC mock	mock	2022_02_17
+Extr-NK-7	Extraction NC	negative	2022_02_17
+PCR-NK-7	PCR NC	negative	2022_02_17
+ZR-even-mock-7	ZR mock	mock	2022_02_17
+0068-original	0068	sample	2020_12_01
+0021-original	0021	sample	2020_12_01
+Extr-NK-1-1	Extraction NC	negative	2020_12_01
+Extr-NK-1-2	Extraction NC	negative	2020_12_01
+PC-NK-1	PCR NC	negative	2020_12_01
+ZR-even-mock-1	ZR mock	mock	2020_12_01
+0027-original	0027	sample	2020_11_27
+0612-original	0612	sample	2020_11_27
+ATCC-2	ATCC mock	mock	2020_11_27
+Extr-NK-2	Extraction NC	negative	2020_11_27
+PCR-NK-2	PCR NC	negative	2020_11_27
+ZR-even-mock-2	ZR mock	mock	2020_11_27
+0096-original	0096	sample	2021_01_06
+0909-original	0909	sample	2021_01_06
+0924-original	0924	sample	2021_01_06
+0922-original	0922	sample	2021_01_06
+0920-original	0920	sample	2021_01_06
+0917-original	0917	sample	2021_01_06
+0961-original	0961	sample	2021_01_06
+0903-original	0903	sample	2021_01_06
+0926-original	0926	sample	2021_01_06
+ATCC-3	ATCC mock	mock	2021_01_06
+Extr-NK-3	Extraction NC	negative	2021_01_06
+PCR-NK-3	PCR NC	negative	2021_01_06
+ZR-even-mock-3	ZR mock	mock	2021_01_06
