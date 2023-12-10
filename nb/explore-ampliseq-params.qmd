@@ -1,0 +1,69 @@
+---
+title: "Exploring Ampliseq parameter space"
+format: html
+editor: source
+---
+
+## Import data
+
+Import Ampliseq `overall_summary.tsv` files generated with various pipeline parameters on a subset of all samples.
+
+```{r}
+#| echo: false
+#| output: false
+
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+test_01 <- read.delim("../results/some-01/overall_summary.tsv", header = TRUE, sep = "\t")
+test_02 <- read.delim("../results/some-02/overall_summary.tsv", header = TRUE, sep = "\t")
+test_03 <- read.delim("../results/some-03/overall_summary.tsv", header = TRUE, sep = "\t")
+test_04 <- read.delim("../results/some-04/overall_summary.tsv", header = TRUE, sep = "\t")
+test_05 <- read.delim("../results/some-05/overall_summary.tsv", header = TRUE, sep = "\t")
+test_06 <- read.delim("../results/some-06/overall_summary.tsv", header = TRUE, sep = "\t")
+```
+
+The parameters used in each case (only the modified parameters are shown):
+
+```{r}
+params <- read.delim("../data/ampliseq-params-space.tsv", header = TRUE, sep = "\t")
+
+show(params)
+```
+
+Get rid of those pesky commas - thousand separators in columns showing cutadapt-related read counts;
+
+```{r}
+columns_to_convert <- c("cutadapt_total_processed", "cutadapt_passing_filters")
+
+test_01[ , columns_to_convert] <- lapply(test_01[ , columns_to_convert],
+                                       function(x){ as.numeric(gsub(",", "", x)) })
+test_02[ , columns_to_convert] <- lapply(test_02[ , columns_to_convert],
+                                       function(x){ as.numeric(gsub(",", "", x)) })
+test_03[ , columns_to_convert] <- lapply(test_03[ , columns_to_convert],
+                                       function(x){ as.numeric(gsub(",", "", x)) })
+test_04[ , columns_to_convert] <- lapply(test_04[ , columns_to_convert],
+                                       function(x){ as.numeric(gsub(",", "", x)) })
+test_05[ , columns_to_convert] <- lapply(test_05[ , columns_to_convert],
+                                       function(x){ as.numeric(gsub(",", "", x)) })
+test_06[ , columns_to_convert] <- lapply(test_06[ , columns_to_convert],
+                                       function(x){ as.numeric(gsub(",", "", x)) })
+```
+
+
+## Filter and join data tables
+
+Make a single table with all pipeline results for further processing.
+
+```{r}
+test_01 <- test_01 %>% mutate(run = "test_01")
+test_02 <- test_02 %>% mutate(run = "test_02")
+test_03 <- test_03 %>% mutate(run = "test_03")
+test_04 <- test_04 %>% mutate(run = "test_04")
+test_05 <- test_05 %>% mutate(run = "test_05")
+test_06 <- test_06 %>% mutate(run = "test_06")
+```
+
+
