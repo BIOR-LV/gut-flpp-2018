@@ -1,7 +1,7 @@
-Parameters	Some-01	Some-02	Some-03	Some-04	Some-05	Some-06
-max_ee	2	3	2	3	3	3
-cutadapt_min_overlap	10	10	3	3	3	3
-trunclenf	254	254	254	254	empty	empty
-trunclenr	188	188	188	188	empty	empty
-trunc_qmin	empty	empty	empty	empty	20	25
-trunc_rmin	empty	empty	empty	empty	empty	empty
+Parameters	Some-01	Some-02	Some-03	Some-04	Some-05	Some-06	Some-07	Some-08	Some-09
+max_ee	2	3	2	3	3	3	3	2	3
+cutadapt_min_overlap	10	10	3	3	3	3	3	3	3
+trunclenf	254	254	254	254	empty	empty	empty	empty	empty
+trunclenr	188	188	188	188	empty	empty	empty	empty	empty
+trunc_qmin	empty	empty	empty	empty	20	25	20	20	25
+trunc_rmin	empty	empty	empty	empty	empty	empty	0.1	0.1	0.1

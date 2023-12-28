@@ -13,6 +13,8 @@ Import Ampliseq `overall_summary.tsv` files generated with various pipeline para
 #| output: false
 
 library(dplyr)
+library(tidyr)
+library(tibble)
 library(ggplot2)
 ```
 
@@ -23,6 +25,9 @@ test_03 <- read.delim("../results/some-03/overall_summary.tsv", header = TRUE, s
 test_04 <- read.delim("../results/some-04/overall_summary.tsv", header = TRUE, sep = "\t")
 test_05 <- read.delim("../results/some-05/overall_summary.tsv", header = TRUE, sep = "\t")
 test_06 <- read.delim("../results/some-06/overall_summary.tsv", header = TRUE, sep = "\t")
+test_07 <- read.delim("../results/some-07/overall_summary.tsv", header = TRUE, sep = "\t")
+test_08 <- read.delim("../results/some-08/overall_summary.tsv", header = TRUE, sep = "\t")
+test_09 <- read.delim("../results/some-09/overall_summary.tsv", header = TRUE, sep = "\t")
 ```
 
 The parameters used in each case (only the modified parameters are shown):
@@ -33,37 +38,102 @@ params <- read.delim("../data/ampliseq-params-space.tsv", header = TRUE, sep = "
 show(params)
 ```
 
-Get rid of those pesky commas - thousand separators in columns showing cutadapt-related read counts;
+## Transform the data in each table to make them usable for plotting
+
+Most importantly, we want to calculate the drop in percentage of surviving reads after each significant step in the pipeline.
+
+These significant steps are:
+
+- `cutadapt_total_processed` (raw input)
+
+- `cutadapt_passing_filters` = `DADA2_input`
+
+- `filtered` (DADA2 len and Q filtering)
+
+- `merged`
+
+- `nonchim` = `ssufilter_input`
+
+- `ssufilter_output` = `lenfilter_input`
+
+- `lenfilter_output` = `input_tax_filter`
+
+- `filtered_tax_filter` (final output)
 
 ```{r}
-columns_to_convert <- c("cutadapt_total_processed", "cutadapt_passing_filters")
+# Create a list of data frames
+df_list <- list(test_01=test_01, 
+                test_02=test_02, 
+                test_03=test_03, 
+                test_04=test_04, 
+                test_05=test_05, 
+                test_06=test_06, 
+                test_07=test_07,
+                test_08=test_08,
+              test_09=test_09)
 
-test_01[ , columns_to_convert] <- lapply(test_01[ , columns_to_convert],
-                                       function(x){ as.numeric(gsub(",", "", x)) })
-test_02[ , columns_to_convert] <- lapply(test_02[ , columns_to_convert],
-                                       function(x){ as.numeric(gsub(",", "", x)) })
-test_03[ , columns_to_convert] <- lapply(test_03[ , columns_to_convert],
-                                       function(x){ as.numeric(gsub(",", "", x)) })
-test_04[ , columns_to_convert] <- lapply(test_04[ , columns_to_convert],
-                                       function(x){ as.numeric(gsub(",", "", x)) })
-test_05[ , columns_to_convert] <- lapply(test_05[ , columns_to_convert],
-                                       function(x){ as.numeric(gsub(",", "", x)) })
-test_06[ , columns_to_convert] <- lapply(test_06[ , columns_to_convert],
-                                       function(x){ as.numeric(gsub(",", "", x)) })
+columns_to_convert <- c("cutadapt_total_processed", "cutadapt_passing_filters") # to remove commas - thousand separators in columns
+
+# Perform the transformations
+for (i in 1:length(df_list)) {
+  # add a variable with ampliseq run name
+  df_list[[i]] <- df_list[[i]] %>% mutate(run = names(df_list)[i])
+  
+  # remove thousand separators (commas)
+  df_list[[i]][ , columns_to_convert] <- lapply(df_list[[i]][ , columns_to_convert],
+                                  function(x){ as.numeric(gsub(",", "", x)) })
+  
+  # make new variables that will be plotted
+  df_list[[i]] <- df_list[[i]] %>% mutate(pct_1 = 1) %>%
+    mutate(pct_2 = cutadapt_passing_filters / cutadapt_total_processed) %>% 
+    mutate(pct_3 = filtered / cutadapt_total_processed) %>% 
+    mutate(pct_4 = merged / cutadapt_total_processed) %>%
+    mutate(pct_5 = nonchim / cutadapt_total_processed) %>%
+    mutate(pct_6 = ssufilter_output / cutadapt_total_processed) %>% 
+    mutate(pct_7 = lenfilter_output / cutadapt_total_processed) %>%
+    mutate(pct_8 = filtered_tax_filter / cutadapt_total_processed)
+  
+  # move sample IDs from column to row names as per tidy data requirement
+  #df_list[[i]] <- df_list[[i]] %>% column_to_rownames(var = "sample")
+  
+# keep only necessary columns
+df_list[[i]] <- df_list[[i]] %>% select(sample, pct_1, pct_2, pct_3, pct_4, pct_5, pct_6, pct_7, pct_8, run)
+
+# transform each run's table from wide to long format
+#df_list[[i]] <- df_list[[i]] %>% pivot_longer(everything(), names_to = c("value", "run"))
+df_list[[i]] <- df_list[[i]] %>% pivot_longer(
+    cols = starts_with("pct_"),
+    names_to = "pipeline_stage",
+    # names_prefix = "pct_",
+    # names_transform = as.integer,
+    values_to = "percent_survived")
+}
 ```
 
-
-## Filter and join data tables
-
-Make a single table with all pipeline results for further processing.
+## Make some graphs
 
 ```{r}
-test_01 <- test_01 %>% mutate(run = "test_01")
-test_02 <- test_02 %>% mutate(run = "test_02")
-test_03 <- test_03 %>% mutate(run = "test_03")
-test_04 <- test_04 %>% mutate(run = "test_04")
-test_05 <- test_05 %>% mutate(run = "test_05")
-test_06 <- test_06 %>% mutate(run = "test_06")
-```
+# bring all data in one table
+long_alltab <- bind_rows(df_list)
 
+long_alltab %>% 
+  filter(!grepl("NC", sample)) %>% # remove data from negative control samples
+  group_by(pipeline_stage, run) %>% 
+  summarise(mean_percent_survived = mean(percent_survived), .groups = "drop") %>% 
+  ggplot() + 
+  geom_line(mapping = aes(x = pipeline_stage, y = mean_percent_survived, colour = run, group = 1)) + 
+  ylim(c(0, 1.02)) + 
+  theme(legend.position = "right",
+        axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Average retention of reads through processing steps in ampliseq pipeline") +
+  scale_x_discrete(labels = c("pct_1" = "Input",
+                              "pct_2" = "Cutadapt filter pass",
+                              "pct_3" = "DADA2 filter pass",
+                              "pct_4" = "DADA2 merged",
+                              "pct_5" = "DADA2 nonchim",
+                              "pct_6" = "SSU filter pass",
+                              "pct_7" = "Length filter pass",
+                              "pct_8" = "Tax filter pass")) +
+  facet_wrap(. ~ run)
+```
 
