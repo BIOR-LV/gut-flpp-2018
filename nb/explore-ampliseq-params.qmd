@@ -4,9 +4,13 @@ format: html
 editor: source
 ---
 
+## Introduction
+
+The aim of this notebook is to find suitable read trimming and filtering parameters for the `ampliseq` pipeline. A subset of all samples, representing all sequencing batches, is used for testing different parameters.
+
 ## Import data
 
-Import Ampliseq `overall_summary.tsv` files generated with various pipeline parameters on a subset of all samples.
+Import `ampliseq` `overall_summary.tsv` files generated with various pipeline parameters on a subset of all samples.
 
 ```{r}
 #| echo: false
@@ -19,49 +23,53 @@ library(ggplot2)
 ```
 
 ```{r}
-test_01 <- read.delim("../results/some-01/overall_summary.tsv", header = TRUE, sep = "\t")
-test_02 <- read.delim("../results/some-02/overall_summary.tsv", header = TRUE, sep = "\t")
-test_03 <- read.delim("../results/some-03/overall_summary.tsv", header = TRUE, sep = "\t")
-test_04 <- read.delim("../results/some-04/overall_summary.tsv", header = TRUE, sep = "\t")
-test_05 <- read.delim("../results/some-05/overall_summary.tsv", header = TRUE, sep = "\t")
-test_06 <- read.delim("../results/some-06/overall_summary.tsv", header = TRUE, sep = "\t")
-test_07 <- read.delim("../results/some-07/overall_summary.tsv", header = TRUE, sep = "\t")
-test_08 <- read.delim("../results/some-08/overall_summary.tsv", header = TRUE, sep = "\t")
-test_09 <- read.delim("../results/some-09/overall_summary.tsv", header = TRUE, sep = "\t")
+test_01 <- read.delim("../results/test-01/overall_summary.tsv", header = TRUE, sep = "\t")
+test_02 <- read.delim("../results/test-02/overall_summary.tsv", header = TRUE, sep = "\t")
+test_03 <- read.delim("../results/test-03/overall_summary.tsv", header = TRUE, sep = "\t")
+test_04 <- read.delim("../results/test-04/overall_summary.tsv", header = TRUE, sep = "\t")
+test_05 <- read.delim("../results/test-05/overall_summary.tsv", header = TRUE, sep = "\t")
+test_06 <- read.delim("../results/test-06/overall_summary.tsv", header = TRUE, sep = "\t")
+test_07 <- read.delim("../results/test-07/overall_summary.tsv", header = TRUE, sep = "\t")
+test_08 <- read.delim("../results/test-08/overall_summary.tsv", header = TRUE, sep = "\t")
+test_09 <- read.delim("../results/test-09/overall_summary.tsv", header = TRUE, sep = "\t")
+test_10 <- read.delim("../results/test-10/overall_summary.tsv", header = TRUE, sep = "\t")
+test_11 <- read.delim("../results/test-11/overall_summary.tsv", header = TRUE, sep = "\t")
+test_12 <- read.delim("../results/test-12/overall_summary.tsv", header = TRUE, sep = "\t")
 ```
 
 The parameters used in each case (only the modified parameters are shown):
 
 ```{r}
-params <- read.delim("../data/ampliseq-params-space.tsv", header = TRUE, sep = "\t")
+#| echo: false
+params <- read.delim("../data/amplitest-params-space.tsv", header = TRUE, sep = "\t")
 
 show(params)
 ```
 
-## Transform the data in each table to make them usable for plotting
+## Transform the data
 
-Most importantly, we want to calculate the drop in percentage of surviving reads after each significant step in the pipeline.
+In order to be able to plot and compare data from different runs, we need to calculate the drop in percentage of surviving reads after each significant step in the pipeline.
 
 These significant steps are:
 
-- `cutadapt_total_processed` (raw input)
+1. `cutadapt_total_processed` (raw input)
 
-- `cutadapt_passing_filters` = `DADA2_input`
+2. `cutadapt_passing_filters` = `DADA2_input`
 
-- `filtered` (DADA2 len and Q filtering)
+3. `filtered` (DADA2 len and Q filtering)
 
-- `merged`
+4. `merged`
 
-- `nonchim` = `ssufilter_input`
+5. `nonchim` = `ssufilter_input`
 
-- `ssufilter_output` = `lenfilter_input`
+6. `ssufilter_output` = `lenfilter_input`
 
-- `lenfilter_output` = `input_tax_filter`
+7. `lenfilter_output` = `input_tax_filter` (This was commented out of the analysis code because BLASTing showed that many, if not all of the filered ASVs were actually valid SSU rRNA sequences. Test_12 summary table did not list the length filter-related columns, therefore it would have caused an incompatibility with the other datasets in this analysis)
 
-- `filtered_tax_filter` (final output)
+8. `filtered_tax_filter` (final output)
 
 ```{r}
-# Create a list of data frames
+# Create a named list of data frames
 df_list <- list(test_01=test_01, 
                 test_02=test_02, 
                 test_03=test_03, 
@@ -70,14 +78,17 @@ df_list <- list(test_01=test_01,
                 test_06=test_06, 
                 test_07=test_07,
                 test_08=test_08,
-              test_09=test_09)
+                test_09=test_09,
+                test_10=test_10,
+                test_11=test_11,
+                test_12=test_12)
 
 columns_to_convert <- c("cutadapt_total_processed", "cutadapt_passing_filters") # to remove commas - thousand separators in columns
 
 # Perform the transformations
 for (i in 1:length(df_list)) {
-  # add a variable with ampliseq run name
-  df_list[[i]] <- df_list[[i]] %>% mutate(run = names(df_list)[i])
+  # add a variable with ampliseq test run name
+  df_list[[i]] <- df_list[[i]] %>% mutate(params = names(df_list)[i])
   
   # remove thousand separators (commas)
   df_list[[i]][ , columns_to_convert] <- lapply(df_list[[i]][ , columns_to_convert],
@@ -90,17 +101,16 @@ for (i in 1:length(df_list)) {
     mutate(pct_4 = merged / cutadapt_total_processed) %>%
     mutate(pct_5 = nonchim / cutadapt_total_processed) %>%
     mutate(pct_6 = ssufilter_output / cutadapt_total_processed) %>% 
-    mutate(pct_7 = lenfilter_output / cutadapt_total_processed) %>%
+    # mutate(pct_7 = lenfilter_output / cutadapt_total_processed) %>%
     mutate(pct_8 = filtered_tax_filter / cutadapt_total_processed)
-  
-  # move sample IDs from column to row names as per tidy data requirement
-  #df_list[[i]] <- df_list[[i]] %>% column_to_rownames(var = "sample")
-  
-# keep only necessary columns
-df_list[[i]] <- df_list[[i]] %>% select(sample, pct_1, pct_2, pct_3, pct_4, pct_5, pct_6, pct_7, pct_8, run)
 
-# transform each run's table from wide to long format
-#df_list[[i]] <- df_list[[i]] %>% pivot_longer(everything(), names_to = c("value", "run"))
+# keep only necessary columns
+df_list[[i]] <- df_list[[i]] %>% select(sample, pct_1, pct_2, pct_3, pct_4, pct_5, pct_6, 
+                                        # pct_7,
+                                        pct_8, params)
+
+# transform each test run's table from wide to long format
+#df_list[[i]] <- df_list[[i]] %>% pivot_longer(everything(), names_to = c("value", "params"))
 df_list[[i]] <- df_list[[i]] %>% pivot_longer(
     cols = starts_with("pct_"),
     names_to = "pipeline_stage",
@@ -118,10 +128,10 @@ long_alltab <- bind_rows(df_list)
 
 long_alltab %>% 
   filter(!grepl("NC", sample)) %>% # remove data from negative control samples
-  group_by(pipeline_stage, run) %>% 
+  group_by(pipeline_stage, params) %>% 
   summarise(mean_percent_survived = mean(percent_survived), .groups = "drop") %>% 
   ggplot() + 
-  geom_line(mapping = aes(x = pipeline_stage, y = mean_percent_survived, colour = run, group = 1)) + 
+  geom_line(mapping = aes(x = pipeline_stage, y = mean_percent_survived, colour = params, group = params)) + 
   ylim(c(0, 1.02)) + 
   theme(legend.position = "right",
         axis.text.x = element_text(angle = 90, hjust = 1)) +
@@ -132,8 +142,57 @@ long_alltab %>%
                               "pct_4" = "DADA2 merged",
                               "pct_5" = "DADA2 nonchim",
                               "pct_6" = "SSU filter pass",
-                              "pct_7" = "Length filter pass",
+                              # "pct_7" = "Length filter pass",
                               "pct_8" = "Tax filter pass")) +
-  facet_wrap(. ~ run)
+facet_wrap(. ~ params)
 ```
+
+Several observations can be made:
+
+- `max_ee: 3` keeps more sequences through processing but  `max_ee: 2` might be more appropriate for ensuring decent quality of output sequences.
+
+- The results are underwhelming for the tests which involve truncation by quality scores instead of fixed truncation lengths for all sequencing batches.
+
+- It appears that changing the `trunc_qmin` and `trunc_rmin` parameters does not make a difference - the read survival in test runs 05-11 seems to depend only on the `max_ee` value. Even the extreme parameters in test_11 don't produce different results.
+
+- When using `trunc_qmin` and `trunc_rmin` parameters, fewer chimeric ASVs are produced. If not using these two parameters, more chimeric sequences are generated but apparently they are detected and removed by DADA2.
+
+## Dig deeper why read survival is so low
+
+Perhaps, the truncation parameters don't work equally well for some sequencing batches. Negative control samples are also more likely to have a negative impact on the average read survival. Let's investigate this further.
+
+```{r}
+# add seq_batch info from samplesheet
+samplesheet <- read.delim("../data/metadata/test-ampliseq-samplesheet.tsv", header = TRUE, sep = "\t") %>% 
+  select(c("sampleID", "run")) %>% 
+  rename("seq_batch" = "run") # calling the column 'run' was mandated by ampliseq but it can be confused with param test runs
+new_longtab <- left_join(long_alltab, samplesheet, by = c("sample" = "sampleID"))
+
+new_longtab %>%
+  #filter(params != "test_01" & params != "test_03" & params != "test_08") %>% # remove irrelevant test runs
+  filter(!grepl("NC", sample)) %>% # remove data from negative control samples
+  group_by(pipeline_stage, params, seq_batch) %>%
+  summarise(mean_percent_survived = mean(percent_survived), .groups = "drop") %>%
+  ggplot() +
+  geom_line(mapping = aes(x = pipeline_stage, y = mean_percent_survived, colour = seq_batch, group = seq_batch)) +
+  ylim(c(0, 1.02)) +
+  theme(legend.position = "right",
+        axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Average retention of reads through processing steps in ampliseq pipeline") +
+  scale_x_discrete(labels = c("pct_1" = "Input",
+                              "pct_2" = "Cutadapt filter pass",
+                              "pct_3" = "DADA2 filter pass",
+                              "pct_4" = "DADA2 merged",
+                              "pct_5" = "DADA2 nonchim",
+                              "pct_6" = "SSU filter pass",
+                            # "pct_7" = "Length filter pass",
+                              "pct_8" = "Tax filter pass")) +
+  facet_wrap(. ~ params)
+```
+
+Indeed, sequencing batch 220217 is characterized by much worse read survival than other batches. Filtering by `max_ee` and not using the `trunc_qmin` and `trunc_rmin` parameters reduces the differences between sequencing batches. 
+
+## Conclusion
+
+Test_12 parameters seem to be most suitable for application to further analysis of all samples. They are the same as test_03 but without ASV filtering by length. DADA2 did not produce any ASV shorter than the read lengths determined by the `trunclenf` and `trunclenf` parameters. Not using `trunc_qmin` and `trunc_rmin` gives better read survival and keeps similar proportion from all sequencing batches while `max_ee:2` ensures that sequences with higher likelihood of being erroneous are dropped.
 
