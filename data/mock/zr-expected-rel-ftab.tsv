@@ -1,9 +1,9 @@
-#OTU ID	ZR_expected
-Bacteria;Firmicutes;Bacilli;Bacillales;Bacillaceae;Bacillus	0.174
-Bacteria;Firmicutes;Bacilli;Lactobacillales;Enterococcaceae;Enterococcus	0.099
-Bacteria;Firmicutes;Bacilli;Lactobacillales;Lactobacillaceae;Limosilactobacillus	0.184
-Bacteria;Firmicutes;Bacilli;Lactobacillales;Listeriaceae;Listeria	0.141
-Bacteria;Firmicutes;Bacilli;Staphylococcales;Staphylococcaceae;Staphylococcus	0.155
-Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella	0.101
-Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Salmonella	0.104
-Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Pseudomonadaceae;Pseudomonas	0.042
+#OTU ID	ZR_even_mock_1	ZR_even_mock_2	ZR_even_mock_3	ZR_even_mock_4	ZR_even_mock_5	ZR_even_mock_7
+Bacteria;Firmicutes;Bacilli;Bacillales;Bacillaceae;Bacillus	0.174	0.174	0.174	0.174	0.174	0.174
+Bacteria;Firmicutes;Bacilli;Lactobacillales;Enterococcaceae;Enterococcus	0.099	0.099	0.099	0.099	0.099	0.099
+Bacteria;Firmicutes;Bacilli;Lactobacillales;Lactobacillaceae;Limosilactobacillus	0.184	0.184	0.184	0.184	0.184	0.184
+Bacteria;Firmicutes;Bacilli;Lactobacillales;Listeriaceae;Listeria	0.141	0.141	0.141	0.141	0.141	0.141
+Bacteria;Firmicutes;Bacilli;Staphylococcales;Staphylococcaceae;Staphylococcus	0.155	0.155	0.155	0.155	0.155	0.155
+Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella	0.101	0.101	0.101	0.101	0.101	0.101
+Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Salmonella	0.104	0.104	0.104	0.104	0.104	0.104
+Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Pseudomonadaceae;Pseudomonas	0.042	0.042	0.042	0.042	0.042	0.042

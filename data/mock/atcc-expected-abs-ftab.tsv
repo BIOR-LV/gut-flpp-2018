@@ -1,19 +1,19 @@
-#OTU ID	ATCC_expected
-Bacteria;Actinobacteriota;Actinobacteria;Actinomycetales;Actinomycetaceae;Actinomyces	3
-Bacteria;Actinobacteriota;Actinobacteria;Bifidobacteriales;Bifidobacteriaceae;Bifidobacterium	5
-Bacteria;Actinobacteriota;Actinobacteria;Propionibacteriales;Propionibacteriaceae;Cutibacterium	3
-Bacteria;Bacteroidota;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides	7
-Bacteria;Bacteroidota;Bacteroidia;Bacteroidales;Porphyromonadaceae;Porphyromonas	4
-Bacteria;Campylobacterota;Campylobacteria;Campylobacterales;Helicobacteraceae;Helicobacter	2
-Bacteria;Deinococcota;Deinococci;Deinococcales;Deinococcaceae;Deinococcus	3
-Bacteria;Firmicutes;Bacilli;Bacillales;Bacillaceae;Bacillus	14
-Bacteria;Firmicutes;Bacilli;Lactobacillales;Enterococcaceae;Enterococcus	4
-Bacteria;Firmicutes;Bacilli;Lactobacillales;Lactobacillaceae;Lactobacillus	6
-Bacteria;Firmicutes;Bacilli;Lactobacillales;Streptococcaceae;Streptococcus	12
-Bacteria;Firmicutes;Bacilli;Staphylococcales;Staphylococcaceae;Staphylococcus	12
-Bacteria;Firmicutes;Clostridia;Clostridiales;Clostridiaceae;Clostridium sensu stricto 1	15
-Bacteria;Proteobacteria;Alphaproteobacteria;Rhodobacterales;Rhodobacteraceae;Rhodobacter	4
-Bacteria;Proteobacteria;Gammaproteobacteria;Burkholderiales;Neisseriaceae;Neisseria	4
-Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella	7
-Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Moraxellaceae;Acinetobacter	6
-Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Pseudomonadaceae;Pseudomonas	4
+#OTU ID	ATCC_mock_2	ATCC_mock_3	ATCC_mock_4	ATCC_mock_5	ATCC_mock_7
+Bacteria;Actinobacteriota;Actinobacteria;Actinomycetales;Actinomycetaceae;Actinomyces	3	3	3	3	3
+Bacteria;Actinobacteriota;Actinobacteria;Bifidobacteriales;Bifidobacteriaceae;Bifidobacterium	5	5	5	5	5
+Bacteria;Actinobacteriota;Actinobacteria;Propionibacteriales;Propionibacteriaceae;Cutibacterium	3	3	3	3	3
+Bacteria;Bacteroidota;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides	7	7	7	7	7
+Bacteria;Bacteroidota;Bacteroidia;Bacteroidales;Porphyromonadaceae;Porphyromonas	4	4	4	4	4
+Bacteria;Campylobacterota;Campylobacteria;Campylobacterales;Helicobacteraceae;Helicobacter	2	2	2	2	2
+Bacteria;Deinococcota;Deinococci;Deinococcales;Deinococcaceae;Deinococcus	3	3	3	3	3
+Bacteria;Firmicutes;Bacilli;Bacillales;Bacillaceae;Bacillus	14	14	14	14	14
+Bacteria;Firmicutes;Bacilli;Lactobacillales;Enterococcaceae;Enterococcus	4	4	4	4	4
+Bacteria;Firmicutes;Bacilli;Lactobacillales;Lactobacillaceae;Lactobacillus	6	6	6	6	6
+Bacteria;Firmicutes;Bacilli;Lactobacillales;Streptococcaceae;Streptococcus	12	12	12	12	12
+Bacteria;Firmicutes;Bacilli;Staphylococcales;Staphylococcaceae;Staphylococcus	12	12	12	12	12
+Bacteria;Firmicutes;Clostridia;Clostridiales;Clostridiaceae;Clostridium sensu stricto 1	15	15	15	15	15
+Bacteria;Proteobacteria;Alphaproteobacteria;Rhodobacterales;Rhodobacteraceae;Rhodobacter	4	4	4	4	4
+Bacteria;Proteobacteria;Gammaproteobacteria;Burkholderiales;Neisseriaceae;Neisseria	4	4	4	4	4
+Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella	7	7	7	7	7
+Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Moraxellaceae;Acinetobacter	6	6	6	6	6
+Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Pseudomonadaceae;Pseudomonas	4	4	4	4	4

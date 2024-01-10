@@ -1,9 +1,9 @@
-#OTU ID	ZR_expected
-Bacteria;Firmicutes;Bacilli;Bacillales;Bacillaceae;Bacillus	174
-Bacteria;Firmicutes;Bacilli;Lactobacillales;Enterococcaceae;Enterococcus	99
-Bacteria;Firmicutes;Bacilli;Lactobacillales;Lactobacillaceae;Limosilactobacillus	184
-Bacteria;Firmicutes;Bacilli;Lactobacillales;Listeriaceae;Listeria	141
-Bacteria;Firmicutes;Bacilli;Staphylococcales;Staphylococcaceae;Staphylococcus	155
-Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella	101
-Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Salmonella	104
-Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Pseudomonadaceae;Pseudomonas	42
+#OTU ID	ZR_even_mock_1	ZR_even_mock_2	ZR_even_mock_3	ZR_even_mock_4	ZR_even_mock_5	ZR_even_mock_7
+Bacteria;Firmicutes;Bacilli;Bacillales;Bacillaceae;Bacillus	174	174	174	174	174	174
+Bacteria;Firmicutes;Bacilli;Lactobacillales;Enterococcaceae;Enterococcus	99	99	99	99	99	99
+Bacteria;Firmicutes;Bacilli;Lactobacillales;Lactobacillaceae;Limosilactobacillus	184	184	184	184	184	184
+Bacteria;Firmicutes;Bacilli;Lactobacillales;Listeriaceae;Listeria	141	141	141	141	141	141
+Bacteria;Firmicutes;Bacilli;Staphylococcales;Staphylococcaceae;Staphylococcus	155	155	155	155	155	155
+Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia-Shigella	101	101	101	101	101	101
+Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Salmonella	104	104	104	104	104	104
+Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Pseudomonadaceae;Pseudomonas	42	42	42	42	42	42
