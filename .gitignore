@@ -5,3 +5,7 @@ nb/explore-ampliseq-params_files
 *.qzv
 *.qza
 *.biom
+.nextflow*
+bin/nf_singularity_cache/
+logs/*
+temp/*
