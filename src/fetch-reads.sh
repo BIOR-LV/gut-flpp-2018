@@ -11,12 +11,12 @@ module load singularity/3.11.4
 cd $PBS_O_WORKDIR #so that all paths are interpreted relative to project root
 
 JOB_BASENAME=$(echo $PBS_JOBNAME | cut -d . -f 1) # dots are not allowed in nf run names
-RUN_NAME="$JOB_BASENAME"-retry-06
+RUN_NAME="$JOB_BASENAME"-retry-00
 
 INPUT=data/metadata/metadata_w_accesions.tsv
 RUN_LIST=temp/run_list.tsv
 OUTDIR=data/raw/$JOB_BASENAME
-CONFIG_FILE=src/nf.config
+CONFIG_FILE=src/nf.config.fetchngs
 NF_WORKDIR=temp/nf_work_$JOB_BASENAME
 
 export NXF_SINGULARITY_CACHEDIR=bin/nf_singularity_cache

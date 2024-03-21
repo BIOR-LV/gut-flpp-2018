@@ -1,0 +1,37 @@
+//nextflow config file for running nf-core/fetchngs on RTU HPC cluster
+
+process {
+
+	// general process paramaters for RTU HPC cluster
+	beforeScript = 'module load singularity/3.11.4'
+	executor = 'pbs'
+	queue = { task.time <= 96.h ? 'batch' : 'long' }
+	scratch = true
+
+	// the following process configs are meant to override fetchngs defaults
+    // don't increase resource allocation for retried tasks without labels but use maximum allowed memory:
+    cpus   = 1
+    memory = 10.GB
+
+    // retry every failed task for a maximum of 3 times, no limit on total error count:
+    errorStrategy = 'retry'
+    maxRetries    = 3
+    maxErrors     = '-1'
+
+    // don't waste many cpus on file download tasks, reduced from default config of 6 cpus:
+    withLabel:process_medium {
+        cpus   = { check_max( 1     * task.attempt, 'cpus'    ) }
+        memory = { check_max( 5.GB * task.attempt, 'memory'  ) }
+        time   = { check_max( 8.h   * task.attempt, 'time'    ) }
+    }
+}
+
+// don't let these tasks spend too much resources:
+params {
+	max_memory = 30.GB
+	max_cpus = 3
+	max_time = 12.h
+}
+
+// Preform work directory cleanup after a successful run
+cleanup = true

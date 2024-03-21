@@ -7,5 +7,6 @@ nb/explore-ampliseq-params_files
 *.biom
 .nextflow*
 bin/nf_singularity_cache/
+data/raw/*
 logs/*
 temp/*
