@@ -10,3 +10,4 @@ bin/nf_singularity_cache/
 data/raw/*
 logs/*
 temp/*
+results/*
