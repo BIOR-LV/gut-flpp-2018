@@ -16,6 +16,7 @@ process {
     executor = 'pbs'
     queue = { task.time <= 96.h ? 'batch' : 'long' }
     scratch = false
+    clusterOptions = '-A bior'
 
     cpus   = { check_max( 1    * task.attempt, 'cpus'   ) }
     memory = { check_max( 6.GB * task.attempt, 'memory' ) }
@@ -24,7 +25,7 @@ process {
 	// retry every task regardless of exit status no more than 3 times, 20 errors max while testing
     errorStrategy = 'retry'
     maxRetries    = 3
-    maxErrors     = 20
+    maxErrors     = 40
 
     // Process-specific resource requirements
     // NOTE - Please try and re-use the labels below as much as possible.
