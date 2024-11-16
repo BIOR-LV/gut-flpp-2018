@@ -6,13 +6,13 @@
 #PBS -A bior
 #PBS -o logs/$PBS_JOBNAME.$PBS_JOBID.log
 
-source activate nf
-module load singularity/3.11.4
-
 cd $PBS_O_WORKDIR #so that all paths are interpreted relative to project root
 
 JOB_BASENAME=$(echo $PBS_JOBNAME | cut -d . -f 1) # dots are not allowed in nf run names
-RUN_NAME="$JOB_BASENAME"-retry-00
+RUN_NAME="$JOB_BASENAME"-retry-02
+
+source activate env/nextflow
+module load singularity/3.11.4
 
 SAMPLESHEET=data/metadata/ampliseq-samplesheet.tsv
 
@@ -25,7 +25,7 @@ export NXF_SINGULARITY_CACHEDIR=bin/nf_singularity_cache
 
 # launch nf-core/ampliseq pipeline
 nextflow run nf-core/ampliseq \
-	-r 2.11.0 \
+	-r 2.12.0 \
 	-name $RUN_NAME \
 	-profile singularity \
 	-params-file $PARAMS_FILE \
