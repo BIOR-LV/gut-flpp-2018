@@ -5,13 +5,13 @@
 #PBS -j oe
 #PBS -o logs/$PBS_JOBNAME.$PBS_JOBID.log
 
-source activate nf
-module load singularity/3.11.4
-
 cd $PBS_O_WORKDIR #so that all paths are interpreted relative to project root
 
 JOB_BASENAME=$(echo $PBS_JOBNAME | cut -d . -f 1) # dots are not allowed in nf run names
 RUN_NAME="$JOB_BASENAME"-retry-00
+
+source activate env/nextflow
+module load singularity/3.11.4
 
 INPUT=data/metadata/metadata_w_accesions.tsv
 RUN_LIST=temp/run_list.tsv
