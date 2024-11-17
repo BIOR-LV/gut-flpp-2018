@@ -25,7 +25,7 @@ process {
 	// retry every task regardless of exit status no more than 3 times, 20 errors max while testing
     errorStrategy = 'retry'
     maxRetries    = 3
-    maxErrors     = 40
+    maxErrors     = 60
 
     // Process-specific resource requirements
     // NOTE - Please try and re-use the labels below as much as possible.
